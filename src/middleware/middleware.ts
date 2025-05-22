@@ -1,6 +1,6 @@
 import { Request, Response, NextFunction } from "express";
-import { getTenantDbConnection, connectToTenantsDb } from "../core/core";
-import { getConfig } from "../core/config";
+import { getTenantDbConnection, connectToTenantsDb } from "../tanent-db/dbConnection";
+import { getConfig } from "../tanent-db/config";
 import { getDomain } from "../utils/getDomain";
 import { resolveTenant } from "../utils/resolveTenant";
 import { Connection } from "mongoose";

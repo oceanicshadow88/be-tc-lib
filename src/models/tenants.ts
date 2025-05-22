@@ -29,7 +29,6 @@ const tenantSchema = new Schema<ITenant>(
     },
     passwordSecret: {
       type: String,
-      // required: true,
     },
     plan: {
       type: String,

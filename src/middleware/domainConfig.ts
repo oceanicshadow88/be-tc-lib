@@ -2,7 +2,7 @@ export interface DomainConfig {
   protocol: string;
   mainDomain: string;
   connectTenantOrigin?: string;
-  postman_testing?: string;
+  postmanTesting?: string;
 }
 
 let _domainConfig: DomainConfig | null = null;
@@ -10,7 +10,7 @@ let _domainConfig: DomainConfig | null = null;
 export const setDomainConfig = (config: DomainConfig) => {
   _domainConfig = {
     ...config,
-    postman_testing: config.postman_testing ?? "false",
+    postmanTesting: config.postmanTesting ?? "false",
     connectTenantOrigin: config.connectTenantOrigin ?? "",
   };
 };

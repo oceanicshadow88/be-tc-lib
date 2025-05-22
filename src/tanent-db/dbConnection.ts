@@ -12,6 +12,7 @@ const connectionOptions = {
   socketTimeoutMS: 30000,
 };
 
+// Create a connection to the tenants database
 export const connectToTenantsDb = async (): Promise<Connection> => {
   const config = getConfig();
 
@@ -21,6 +22,7 @@ export const connectToTenantsDb = async (): Promise<Connection> => {
   return tenantsConnection;
 };
 
+// Get the connection to the tenants database
 export const getTenantsConnection = (): Connection => {
   if (!tenantsConnection) {
     throw new Error("Tenants connection not initialized");
@@ -29,6 +31,7 @@ export const getTenantsConnection = (): Connection => {
   return tenantsConnection;
 };
 
+// Find a tenant by host and tenantId
 export const getTenant = async (host: string, tenantId: string, isLocalEnv: boolean): Promise<ITenantModel> => {
   if (!host || !tenantId) {
     throw new Error("Missing host or tenantId");
@@ -47,6 +50,7 @@ export const getTenant = async (host: string, tenantId: string, isLocalEnv: bool
   return tenant;
 };
 
+// Get the URI for a tenant database
 export const getTenantUri = (tenant: ITenantModel): string => {
   const config = getConfig();
   const tenantUriName = tenant?.plan !== Plans.Free ? tenant.id.toString() : PUBLIC_DB;
@@ -54,12 +58,14 @@ export const getTenantUri = (tenant: ITenantModel): string => {
   return config.publicUri.replace(PUBLIC_DB, tenantUriName);
 };
 
+// Get the connection to a tenant database
 export const getTenantDbConnection = async (tenantId: string): Promise<Connection> => {
   const config = getConfig();
   if (!databaseConnectionPool || !databaseConnectionPool[tenantId]) {
     const tenant: ITenantModel = await getTenant(config.host, tenantId, config.isLocalEnv);
     const databaseUri = getTenantUri(tenant);
     const connection = await mongoose.createConnection(databaseUri, connectionOptions);
+    await connection.asPromise();
     databaseConnectionPool[tenantId] = connection;
     return connection;
   }

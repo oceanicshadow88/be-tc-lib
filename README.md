@@ -48,7 +48,7 @@ setDomainConfig({
   protocol: "https://",
   mainDomain: "example.com",
   connectTenantOrigin: "tenant123",
-  postman_testing: "false",
+  postmanTesting: "false",
 });
 ```
 

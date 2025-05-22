@@ -12,7 +12,7 @@ export const getDomain = (req: Request, isLocalEnv: boolean): string => {
     if (req.headers.origin) {
       return req.headers.origin;
     }
-    if (domainConfig.postman_testing!.toLocaleLowerCase() === "true") {
+    if (domainConfig.postmanTesting!.toLocaleLowerCase() === "true") {
       return "localhost";
     }
     return "";

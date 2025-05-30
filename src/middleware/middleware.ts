@@ -1,5 +1,5 @@
 import { Request, Response, NextFunction } from "express";
-import { getTenantsConnection, getTenantDbConnection, connectToTenantsDb } from "../core/core";
+import { getTenantDbConnection, connectToTenantsDb } from "../core/core";
 import { getConfig } from "../core/config";
 import { getDomain } from "../utils/getDomain";
 import { resolveTenant } from "../utils/resolveTenant";

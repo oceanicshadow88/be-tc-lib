@@ -32,7 +32,7 @@ import { initMultiTenantConfig } from "be-tc-lib";
 
 initMultiTenantConfig({
   tenantsUri: "mongodb://localhost:27017/tenants",
-  publicUri: "mongodb://localhost:27017/public",
+  publicUri: "mongodb://localhost:27017/{{TENANT}}",
   tenantId: "tenant123",
   host: "tenant123.example.com",
   isLocalEnv: true,
@@ -48,7 +48,7 @@ setDomainConfig({
   protocol: "https://",
   mainDomain: "example.com",
   connectTenantOrigin: "tenant123",
-  postmanTesting: "false",
+  postman_testing: "false",
 });
 ```
 

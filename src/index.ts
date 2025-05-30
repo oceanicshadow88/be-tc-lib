@@ -1,11 +1,6 @@
 // Core config & connections
-export { initMultiTenantConfig, getConfig } from "./tanent-db/config";
-export {
-  connectToTenantsDb,
-  getTenantsConnection,
-  getTenantDbConnection,
-  getTenantUri,
-} from "./tanent-db/dbConnection";
+export { initMultiTenantConfig, getConfig } from "./core/config";
+export { connectToTenantsDb, getTenantsConnection, getTenantDbConnection, getTenantUri } from "./core/core";
 
 // for apps that want to resolve tenant based on host
 export { resolveTenant } from "./utils/resolveTenant";

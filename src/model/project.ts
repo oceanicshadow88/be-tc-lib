@@ -56,11 +56,8 @@ const projectSchema = new mongoose.Schema(
   { timestamps: true },
 );
 
-const getModel = (connection: any) => {
-  if (!connection) {
-    throw new Error('No connection');
-  }
-  return connection.model('projects', projectSchema);
+const getModel = () => {
+  return mongoose.connection.model('projects', projectSchema);
 };
 
 export { getModel };

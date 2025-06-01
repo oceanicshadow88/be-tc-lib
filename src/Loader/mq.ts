@@ -1,7 +1,7 @@
 import amqp, { Channel, ChannelModel } from 'amqplib';
 import config from './config';
 
-const RABBITMQ_URL = config.RABBITMQ_CONNECTION
+const RABBITMQ_URL = config.RABBITMQ_CONNECTION;
 
 const EXCHANGE_NAME = 'import_exchange';
 const QUEUE_NAME = 'import_queue';
@@ -44,11 +44,10 @@ export const closeRabbitMQ = async (): Promise<void> => {
 };
 
 export const consumeMessages = async (onMessage: (msg: amqp.ConsumeMessage | null) => void) => {
-  const ch = await connectToRabbitMQ();
-  await ch.consume(QUEUE_NAME, (msg) => {
+  await channel?.consume(QUEUE_NAME, (msg) => {
     if (msg) {
       onMessage(msg);
-      ch.ack(msg);
+      channel?.ack(msg);
     }
   });
 };

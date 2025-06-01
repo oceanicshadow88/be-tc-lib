@@ -1,6 +1,5 @@
 import mongoose, { Types } from 'mongoose';
 import * as Project from './project';
-import { dataConnectionPool } from '../utils/dbContext';
 
 export const ticketSchema = new mongoose.Schema(
   {
@@ -91,9 +90,10 @@ export const ticketSchema = new mongoose.Schema(
   { timestamps: true },
 );
 
+// TODO
 async function assignTicketNumber(doc: any) {
   if (doc.project && doc.temp) {
-    const project = await Project.getModel(dataConnectionPool[doc.temp]).findByIdAndUpdate(
+    const project = await Project.getModel().findByIdAndUpdate(
       doc.project,
       { $inc: { ticketCounter: 1 } },
       { new: true, upsert: true },
@@ -129,6 +129,5 @@ ticketSchema.methods.toJSON = function () {
 };
 
 export const getModel = () => {
-  const conn = mongoose.connection;
-  return conn.model('tickets', ticketSchema);
+  return mongoose.connection.model('tickets', ticketSchema);
 };

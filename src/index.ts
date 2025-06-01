@@ -7,4 +7,5 @@ const init = async () => {
   await connectToRabbitMQ();
   await startMessageConsumer();
 };
+
 init();

@@ -80,6 +80,11 @@ async function handleParsedCsv(
   ownerId: string | undefined,
   batchSize: number,
 ) {
+  // Ensure database connection is established
+  if (!mongoose.connection || mongoose.connection.readyState !== 1) {
+    throw new Error('Database connection not established 111111111');
+  }
+
   const ProjectModel = Project.getModel();
   const TicketModel = Ticket.getModel();
   const TypeModel = Type.getModel();

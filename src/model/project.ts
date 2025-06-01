@@ -1,5 +1,4 @@
-import * as mongoose from 'mongoose';
-import { Types } from 'mongoose';
+import mongoose, { Types } from 'mongoose';
 
 const projectSchema = new mongoose.Schema(
   {
@@ -57,6 +56,9 @@ const projectSchema = new mongoose.Schema(
 );
 
 const getModel = () => {
+  if (!mongoose.connection || mongoose.connection.readyState !== 1) {
+    throw new Error('Database connection not established');
+  }
   return mongoose.connection.model('projects', projectSchema);
 };
 

@@ -1,11 +1,13 @@
-import amqp, { Connection, Channel } from 'amqplib';
+import amqp, { Channel, ChannelModel } from 'amqplib';
+import config from './config';
 
-const isLocal = process.env.NODE_ENV === 'development' || process.env.NODE_ENV === 'local';
-const RABBITMQ_URL = isLocal
-  ? 'amqp://localhost'
-  : process.env.RABBITMQ_URL ?? 'amqp://localhost';
+const RABBITMQ_URL = config.RABBITMQ_CONNECTION
 
-let connection: Connection | null = null;
+const EXCHANGE_NAME = 'import_exchange';
+const QUEUE_NAME = 'import_queue';
+const ROUTING_KEY = 'import.csv';
+
+let connection: ChannelModel | null = null;
 let channel: Channel | null = null;
 
 export const connectToRabbitMQ = async (): Promise<Channel> => {
@@ -14,6 +16,11 @@ export const connectToRabbitMQ = async (): Promise<Channel> => {
   }
   connection = await amqp.connect(RABBITMQ_URL);
   channel = await connection.createChannel();
+
+  await channel.assertExchange(EXCHANGE_NAME, 'direct', { durable: true });
+  await channel.assertQueue(QUEUE_NAME, { durable: true });
+  await channel.bindQueue(QUEUE_NAME, EXCHANGE_NAME, ROUTING_KEY);
+
   channel.on('error', (err) => {
     console.error('RabbitMQ channel error:', err);
     channel = null;
@@ -34,4 +41,14 @@ export const closeRabbitMQ = async (): Promise<void> => {
     await connection.close();
     connection = null;
   }
+};
+
+export const consumeMessages = async (onMessage: (msg: amqp.ConsumeMessage | null) => void) => {
+  const ch = await connectToRabbitMQ();
+  await ch.consume(QUEUE_NAME, (msg) => {
+    if (msg) {
+      onMessage(msg);
+      ch.ack(msg);
+    }
+  });
 };

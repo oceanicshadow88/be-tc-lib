@@ -6,6 +6,7 @@ import * as Project from '../model/project';
 import * as Ticket from '../model/ticket';
 import { JSONContent } from '@tiptap/core';
 import * as Type from '../model/type';
+import { promiseHooks } from 'v8';
 
 export const convertPlainTextToTipTapNodes = (rawDescription: string): string => {
   const lines = rawDescription.split('\n');
@@ -80,6 +81,7 @@ async function handleParsedCsv(
   ownerId: string | undefined,
   batchSize: number,
 ) {
+  console.log('handleParsedCsv 222222');
   // Ensure database connection is established
   if (!mongoose.connection || mongoose.connection.readyState !== 1) {
     throw new Error('Database connection not established 111111111');
@@ -92,6 +94,8 @@ async function handleParsedCsv(
   try {
     const projectObject = buildProjectObjectRequiredOnly(firstRow, tenantId, ownerId);
     const project = await ProjectModel.create([projectObject]);
+
+    console.log('project', ProjectModel);
 
     let batch: any[] = [];
     let ticketInsertPromises: Promise<any>[] = [];
@@ -131,6 +135,7 @@ export async function processCsv(
   ownerId?: string,
   batchSize = 5000,
 ): Promise<void> {
+  console.log('processCsv1111111');
   const inputStream = createInputStream(inputFilePath);
   let firstRow: any = null;
   const tickets: any[] = [];

@@ -129,5 +129,8 @@ ticketSchema.methods.toJSON = function () {
 };
 
 export const getModel = () => {
+  if (!mongoose.connection || mongoose.connection.readyState !== 1) {
+    throw new Error('Database connection not established');
+  }
   return mongoose.connection.model('tickets', ticketSchema);
 };

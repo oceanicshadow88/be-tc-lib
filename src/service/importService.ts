@@ -6,7 +6,6 @@ import * as Project from '../model/project';
 import * as Ticket from '../model/ticket';
 import { JSONContent } from '@tiptap/core';
 import * as Type from '../model/type';
-import { promiseHooks } from 'v8';
 
 export const convertPlainTextToTipTapNodes = (rawDescription: string): string => {
   const lines = rawDescription.split('\n');

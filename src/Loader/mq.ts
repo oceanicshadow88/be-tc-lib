@@ -44,8 +44,6 @@ export const closeRabbitMQ = async (): Promise<void> => {
 };
 
 export const consumeMessages = async (onMessage: (msg: amqp.ConsumeMessage | null) => void) => {
-  console.log('22222222222');
-
   await channel?.consume(QUEUE_NAME, (msg) => {
     if (msg) {
       onMessage(msg);
